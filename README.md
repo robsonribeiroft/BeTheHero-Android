@@ -1,6 +1,6 @@
 <h1 align="center">
-    <img alt="bethehero" src=".readmeSrc/bethehero.png" width="200px" />
-    <img alt="android" src=".readmeSrc/android_logo.png" width="200px" />
+    <img src="readmeSrc/bethehero.png" width="200px" />
+    <img src="readmeSrc/android_logo.png" width="200px" />
 </h1>
 
 ## Minha versão
