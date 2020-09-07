@@ -12,7 +12,7 @@ class IncidentAdapter: RecyclerView.Adapter<IncidentViewHolder>() {
     var onItemSelect: (position:Int)->Unit = {}
     var list = emptyList<Incident>()
         set(value) {
-            val diffUtil = DiffUtil.calculateDiff(CustomDiffUtil<Incident>(list, value))
+            val diffUtil = DiffUtil.calculateDiff(CustomDiffUtil(list, value))
             diffUtil.dispatchUpdatesTo(this)
             field = value
         }

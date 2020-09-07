@@ -25,7 +25,7 @@ object Api{
 interface ApiService {
 
     companion object{
-        const val BASE_URL = "http://localhost:3333/"
+        const val BASE_URL = "https://api-ajude-alguem.herokuapp.com/"
     }
 
     @GET("incidents")

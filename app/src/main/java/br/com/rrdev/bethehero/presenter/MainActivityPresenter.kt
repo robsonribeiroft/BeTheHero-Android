@@ -23,9 +23,11 @@ class MainActivityPresenter: MainActivityContract.Presenter<MainActivityContract
 
     fun getIncidents() = launch{
         val api = Api.getApiService()
-        println("dismiss")
         val response = api.getIncidents().execute()
         if (response.isSuccessful && response.body() != null){
+            withContext(Dispatchers.Main){ view.updateUI(response.body()!!) }
+        }
+        else{
             withContext(Dispatchers.Main){ view.updateUI(response.body()!!) }
         }
     }

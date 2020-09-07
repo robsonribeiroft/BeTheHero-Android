@@ -7,18 +7,23 @@ import java.text.DecimalFormat
 
 @Parcelize
 data class Incident(
-    val id: Int,
-    val name: String,
-    val email: String,
-    val whatsapp: String,
-    val title: String,
+    val city: String,
     val description: String,
-    val value: Double): Parcelable{
+    val email: String,
+    val id: Int,
+    val img_url: String,
+    val name: String,
+    val ong_id: String,
+    val sensible_content: Int,
+    val title: String,
+    val uf: String,
+    val value: Int,
+    val whatsapp: String): Parcelable{
 
     fun getValueFormat(): String {
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
 
-        return "R$ ${df.format(value)} reais"
+        return "R$ ${df.format(value)}"
     }
 }

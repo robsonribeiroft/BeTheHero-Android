@@ -1,12 +1,13 @@
 package br.com.rrdev.bethehero.view
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import br.com.rrdev.bethehero.R
 import br.com.rrdev.bethehero.models.Incident
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -17,35 +18,49 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        incident = intent.extras?.getParcelable<Incident>("incident")
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            title = "Casos disponíveis"
+        }
+
+        incident = intent.extras?.getParcelable("incident")
 
         incident?.run {
-            text_ong.text = name
-            text_value.text = getValueFormat()
-            text_description.text = title
-            text_description_complete.text = description
+            text_title.text = title
+            val money = "Valor: ${getValueFormat()}"
+            text_valor.text = money
+            text_description.text = description
+            btn_contato.setOnClickListener { startWhatApp(whatsapp) }
+            Picasso
+                .get()
+                .load(img_url)
+                .placeholder(R.drawable.ic_logo_red)
+                .error(R.drawable.ic_logo_red)
+                .into(img_incident)
         }
-        Log.d("content", "onDetail: "+incident.toString())
+    }
 
-        btn_back.setOnClickListener { finish() }
-
-        btn_whatsapp.setOnClickListener {
-            val phone= incident?.whatsapp ?: ""
-            val url = "https://api.whatsapp.com/send?phone=$phone"
-            val whatsAppIntent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(url)
-            }
-            startActivity(whatsAppIntent)
+    private fun startWhatApp(phone: String){
+        val url = "https://api.whatsapp.com/send?phone=$phone"
+        val whatsAppIntent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
         }
+        startActivity(whatsAppIntent)
+    }
 
-        btn_email.setOnClickListener {
-            val intentEmail = Intent(Intent.ACTION_SENDTO).apply {
-                putExtra(Intent.EXTRA_EMAIL, incident?.email ?: "")
-                putExtra(Intent.EXTRA_SUBJECT, "Subject")
-                putExtra(Intent.EXTRA_TEXT, "email body")
-                type = "message/rfc822"
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+    companion object{
+        fun newActivityInstance(context: Context, incident: Incident){
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra("incident", incident)
             }
-            startActivity(intentEmail)
+            context.startActivity(intent)
         }
     }
 }
